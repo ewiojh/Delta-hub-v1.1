@@ -311,7 +311,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)local function getFunctions(category)
     local funcs = {
-        ["脚本1"] = {"夜脚本", "ROB V2", "Luarmor"},
+        ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本"},
         ["脚本2"] = {"脚本E", "脚本F", "脚本G"},
         ["脚本3"] = {"脚本H", "脚本I", "脚本J"},
         ["脚本4"] = {"脚本K", "脚本L", "脚本M"},
@@ -395,8 +395,8 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/ylt410/roblox-Script/refs/heads/main/yejiaoben"))()
                     elseif funcName == "ROB V2" then
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
-                    elseif funcName == "Luarmor" then
-                        loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/0672832696abd78403b72cf38c354b7f.lua"))()
+                    elseif funcName == "Emote脚本" then
+                        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
                     elseif funcName == "脚本E" then
                         -- 放脚本E代码
                     elseif funcName == "脚本F" then
