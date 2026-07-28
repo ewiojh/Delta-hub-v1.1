@@ -403,23 +403,23 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
                     elseif funcName == "Emote脚本" then
                         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
-                    elseif
-funcName == "双逆" then
-
-local getnamecallmethod
-= getnamecallmethod
-local Speaker = cloneref(game:GetService("Players")).LocalPlayer
-local OldNameCall
-OldNameCall = hookmetamethod(game, "__namecall", function(self, ...)
-if self ~= Speaker or getnamecallmethod() ~= "IsInGroup" then
-return OldNameCall(self, ...)
+                    elseif funcName == "双逆" then
+    -- 伪装代码
+    local getnamecallmethod = getnamecallmethod
+    local Speaker = cloneref(game:GetService("Players")).LocalPlayer
+    local OldNameCall
+    OldNameCall = hookmetamethod(game, "__namecall", function(self, ...)
+        if self ~= Speaker or getnamecallmethod() ~= "IsInGroup" then
+            return OldNameCall(self, ...)
+        end
+        return true
+    end)
+    hookfunction(Speaker.IsInGroup, function(self, ...)
+        return true
+    end)
+    -- 加载脚本
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ShenJiaoBen/ScriptLoader/refs/heads/main/Linni_FreeLoader.lua"))()
 end
-return true
-end)
-hookfunction(Speaker.IsInGroup, function(self, ...)
-return true
-end)loadstring(game:HttpGet("https://raw.githubusercontent.com/ShenJiaoBen/ScriptLoader/refs/heads/main/Linni_FreeLoader.lua"))()
-￼
 
                     elseif funcName == "脚本E" then
                         -- 放脚本E代码
