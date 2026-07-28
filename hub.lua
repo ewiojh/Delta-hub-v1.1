@@ -317,8 +317,8 @@ RunService.RenderStepped:Connect(function()
     end
 end)local function getFunctions(category)
     local funcs = {
-        ["通用1"] = {"夜脚本", "ROB V2", "Emote脚本"},
-        ["通用2"] = {"ax", "脚本F", "脚本G"},
+        ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本"},
+        ["脚本2"] = {"ax", "脚本F", "脚本G"},
         ["脚本3"] = {"脚本H", "脚本I", "脚本J"},
         ["脚本4"] = {"脚本K", "脚本L", "脚本M"},
         ["脚本5"] = {"脚本N", "脚本O", "脚本P"},
