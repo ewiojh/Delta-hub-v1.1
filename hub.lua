@@ -403,7 +403,6 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
                     elseif funcName == "Emote脚本" then
                         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
-                    
                     elseif funcName == "脚本E" then
                         -- 放脚本E代码
                     elseif funcName == "脚本F" then
@@ -559,7 +558,47 @@ do
     topDrag.InputEnded:Connect(endDrag)
     
     UserInputService.InputChanged:Connect(moveDrag)
-end-- ============================================
+end-- ===== 欢迎飘字 =====
+local function showWelcome()
+    -- 创建临时GUI
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "WelcomeNotify"
+    gui.Parent = game.CoreGui
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 0, 0, 0)
+    label.Position = UDim2.new(0.5, 0, 0.5, 0)
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.Text = "🎉 欢迎使用 Delta Hub"
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 28
+    label.TextStrokeTransparency = 0.3
+    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.Parent = gui
+
+    -- 弹入动画
+    label.Size = UDim2.new(0, 0, 0, 0)
+    local TweenService = game:GetService("TweenService")
+    local sizeTween = TweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 400, 0, 50)
+    })
+    sizeTween:Play()
+
+    -- 停留1.5秒后淡出消失
+    task.wait(1.5)
+    local fadeTween = TweenService:Create(label, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        TextTransparency = 1
+    })
+    fadeTween:Play()
+    task.wait(0.6)
+    gui:Destroy()
+end
+
+-- 延迟0.5秒执行，确保菜单先加载完
+task.wait(0.5)
+showWelcome()-- ============================================
 -- 本地通知系统 v1.0
 -- 只有本地玩家可见，不触发服务器事件
 -- ============================================
@@ -715,127 +754,5 @@ _G.LocalNotification.achievement(
     "🏆 脚本加载成功",
     "Delta Hub 已就绪",
     1883282684  -- 示例图标ID，换成你自己的
-)-- ===== 欢迎飘字 =====
-local function showWelcome()
-    -- 创建临时GUI
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "WelcomeNotify"
-    gui.Parent = game.CoreGui
-
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(0, 0, 0, 0)
-    label.Position = UDim2.new(0.5, 0, 0.5, 0)
-    label.AnchorPoint = Vector2.new(0.5, 0.5)
-    label.Text = "🎉 欢迎使用 Delta Hub"
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextSize = 28
-    label.TextStrokeTransparency = 0.3
-    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-    label.BackgroundTransparency = 1
-    label.Font = Enum.Font.GothamBold
-    label.Parent = gui
-
-    -- 弹入动画
-    label.Size = UDim2.new(0, 0, 0, 0)
-    local TweenService = game:GetService("TweenService")
-    local sizeTween = TweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = UDim2.new(0, 400, 0, 50)
-    })
-    sizeTween:Play()
-
-    -- 停留1.5秒后淡出消失
-    task.wait(1.5)
-    local fadeTween = TweenService:Create(label, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        TextTransparency = 1
-    })
-    fadeTween:Play()
-    task.wait(0.6)
-    gui:Destroy()
-end
-
--- 延迟0.5秒执行，确保菜单先加载完
-task.wait(0.5)
-showWelcome()local function showLeftNotification(title, content, duration)
-    duration = duration or 5
-    local gui = Instance.new("ScreenGui")
-    gui.Name = "LeftNotify"
-    gui.Parent = game.CoreGui
-    gui.ResetOnSpawn = false
-
-    local container = Instance.new("Frame")
-    container.Size = UDim2.new(0, 320, 0, 120)
-    container.Position = UDim2.new(0, -320, 0.15, 0)
-    container.BackgroundColor3 = Color3.fromRGB(20, 20, 28)
-    container.BackgroundTransparency = 0.08
-    container.BorderSizePixel = 0
-    container.Parent = gui
-
-    local c = Instance.new("UICorner")
-    c.CornerRadius = UDim.new(0, 16)
-    c.Parent = container
-
-    local stroke = Instance.new("UIStroke")
-    stroke.Thickness = 1.5
-    stroke.Transparency = 0.2
-    stroke.Color = Color3.fromRGB(255, 255, 255)
-    stroke.Parent = container
-
-    -- N图标
-    local nIcon = Instance.new("Frame")
-    nIcon.Size = UDim2.new(0, 36, 0, 36)
-    nIcon.Position = UDim2.new(0.05, 0, 0.5, -18)
-    nIcon.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
-    nIcon.BackgroundTransparency = 0.3
-    nIcon.BorderSizePixel = 0
-    nIcon.Parent = container
-    local nc = Instance.new("UICorner")
-    nc.CornerRadius = UDim.new(0, 8)
-    nc.Parent = nIcon
-
-    local nText = Instance.new("TextLabel")
-    nText.Size = UDim2.new(1, 0, 1, 0)
-    nText.Text = "N"
-    nText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    nText.TextSize = 20
-    nText.TextXAlignment = Enum.TextXAlignment.Center
-    nText.BackgroundTransparency = 1
-    nText.Font = Enum.Font.GothamBold
-    nText.Parent = nIcon
-
-    local titleLabel = Instance.new("TextLabel")
-    titleLabel.Size = UDim2.new(0.7, 0, 0.3, 0)
-    titleLabel.Position = UDim2.new(0.22, 0, 0.12, 0)
-    titleLabel.Text = title or "通知"
-    titleLabel.TextColor3 = Color3.fromRGB(240, 240, 245)
-    titleLabel.TextSize = 16
-    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
-    titleLabel.BackgroundTransparency = 1
-    titleLabel.Font = Enum.Font.GothamBold
-    titleLabel.Parent = container
-
-    local contentLabel = Instance.new("TextLabel")
-    contentLabel.Size = UDim2.new(0.7, 0, 0.4, 0)
-    contentLabel.Position = UDim2.new(0.22, 0, 0.45, 0)
-    contentLabel.Text = content or ""
-    contentLabel.TextColor3 = Color3.fromRGB(180, 180, 195)
-    contentLabel.TextSize = 14
-    contentLabel.TextXAlignment = Enum.TextXAlignment.Left
-    contentLabel.BackgroundTransparency = 1
-    contentLabel.Font = Enum.Font.Gotham
-    contentLabel.Parent = container
-
-    -- 滑入
-    local TweenService = game:GetService("TweenService")
-    local slideIn = TweenService:Create(container, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Position = UDim2.new(0, 0, 0.15, 0)
-    })
-    slideIn:Play()
-
-    task.wait(duration)
-    local slideOut = TweenService:Create(container, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-        Position = UDim2.new(0, -320, 0.15, 0)
-    })
-    slideOut:Play()
-    task.wait(0.6)
-    gui:Destroy()
-end
+)task.wait(1)
+showLeftNotification("🎮 Delta Hub", "脚本已加载，欢迎使用！", 5)
