@@ -558,7 +558,163 @@ do
     topDrag.InputEnded:Connect(endDrag)
     
     UserInputService.InputChanged:Connect(moveDrag)
-end-- ===== 欢迎飘字 =====
+end-- ============================================
+-- 本地通知系统 v1.0
+-- 只有本地玩家可见，不触发服务器事件
+-- ============================================
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local CoreGui = game:GetService("CoreGui")
+local TweenService = game:GetService("TweenService")
+
+-- ===== 创建通知容器 =====
+local notificationGui = Instance.new("ScreenGui")
+notificationGui.Name = "LocalNotifications"
+notificationGui.Parent = CoreGui
+
+-- ===== 1. 屏幕飘字（本地提示） =====
+local function showFloatingText(text, color, duration)
+    color = color or Color3.fromRGB(255, 255, 255)
+    duration = duration or 1.5
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 0, 0, 0)
+    label.Position = UDim2.new(0.5, 0, 0.5, 0)
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.Text = text
+    label.TextColor3 = color
+    label.TextSize = 24
+    label.TextScaled = false
+    label.TextStrokeTransparency = 0.5
+    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.Parent = notificationGui
+
+    -- 尺寸动画（从小到大）
+    label.Size = UDim2.new(0, 0, 0, 0)
+    local sizeTween = TweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 300, 0, 40)
+    })
+    sizeTween:Play()
+
+    -- 上浮 + 淡出
+    task.wait(0.5)
+    local posTween = TweenService:Create(label, TweenInfo.new(duration, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0.5, 0, 0.35, 0),
+        TextTransparency = 1
+    })
+    posTween:Play()
+    task.wait(duration)
+    label:Destroy()
+end
+
+-- ===== 2. 成就弹窗（罗布勒斯原生风格，圆角+图片） =====
+local function showAchievement(title, description, imageId, callback)
+    -- 创建弹窗
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0, 340, 0, 120)
+    frame.Position = UDim2.new(0.5, -170, 0.15, -120)
+    frame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+    frame.BackgroundTransparency = 0.05
+    frame.BorderSizePixel = 0
+    frame.Parent = notificationGui
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 16)
+    corner.Parent = frame
+
+    -- 边框光效
+    local stroke = Instance.new("UIStroke")
+    stroke.Thickness = 2
+    stroke.Transparency = 0.3
+    stroke.Color = Color3.fromRGB(255, 200, 50)
+    stroke.Parent = frame
+
+    -- 图标（圆形图片）
+    local iconContainer = Instance.new("Frame")
+    iconContainer.Size = UDim2.new(0, 64, 0, 64)
+    iconContainer.Position = UDim2.new(0.05, 0, 0.5, -32)
+    iconContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
+    iconContainer.BackgroundTransparency = 0.5
+    iconContainer.BorderSizePixel = 0
+    iconContainer.Parent = frame
+
+    local iconCorner = Instance.new("UICorner")
+    iconCorner.CornerRadius = UDim.new(1, 0)
+    iconCorner.Parent = iconContainer
+
+    -- 图片（如果提供了imageId）
+    if imageId then
+        local image = Instance.new("ImageLabel")
+        image.Size = UDim2.new(0.8, 0, 0.8, 0)
+        image.Position = UDim2.new(0.1, 0, 0.1, 0)
+        image.Image = "rbxassetid://" .. tostring(imageId)
+        image.BackgroundTransparency = 1
+        image.Parent = iconContainer
+    end
+
+    -- 标题
+    local titleLabel = Instance.new("TextLabel")
+    titleLabel.Size = UDim2.new(0.6, 0, 0.3, 0)
+    titleLabel.Position = UDim2.new(0.3, 0, 0.15, 0)
+    titleLabel.Text = title or "成就解锁"
+    titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    titleLabel.TextSize = 18
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    titleLabel.BackgroundTransparency = 1
+    titleLabel.Font = Enum.Font.GothamBold
+    titleLabel.Parent = frame
+
+    -- 描述
+    local descLabel = Instance.new("TextLabel")
+    descLabel.Size = UDim2.new(0.6, 0, 0.3, 0)
+    descLabel.Position = UDim2.new(0.3, 0, 0.5, 0)
+    descLabel.Text = description or ""
+    descLabel.TextColor3 = Color3.fromRGB(180, 180, 195)
+    descLabel.TextSize = 14
+    descLabel.TextXAlignment = Enum.TextXAlignment.Left
+    descLabel.BackgroundTransparency = 1
+    descLabel.Font = Enum.Font.Gotham
+    descLabel.Parent = frame
+
+    -- 滑动进入动画
+    frame.Position = UDim2.new(0.5, -170, 0.15, -120)
+    local enterTween = TweenService:Create(frame, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0.5, -170, 0.15, 0)
+    })
+    enterTween:Play()
+
+    -- 自动消失
+    task.wait(3.5)
+    local exitTween = TweenService:Create(frame, TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+        Position = UDim2.new(0.5, -170, 0.15, -120),
+        BackgroundTransparency = 1
+    })
+    exitTween:Play()
+    task.wait(0.5)
+    frame:Destroy()
+
+    if callback then callback() end
+end
+
+-- ===== 导出函数 =====
+_G.LocalNotification = {
+    float = showFloatingText,
+    achievement = showAchievement
+}
+
+-- ===== 示例：加载完成后显示成就 =====
+task.wait(0.5)
+_G.LocalNotification.float("🎉 欢迎回来！", Color3.fromRGB(100, 255, 150))
+task.wait(1)
+
+_G.LocalNotification.achievement(
+    "🏆 脚本加载成功",
+    "Delta Hub 已就绪",
+    1883282684  -- 示例图标ID，换成你自己的
+)-- ===== 欢迎飘字 =====
 local function showWelcome()
     -- 创建临时GUI
     local gui = Instance.new("ScreenGui")
