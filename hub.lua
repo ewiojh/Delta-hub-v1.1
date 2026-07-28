@@ -404,7 +404,7 @@ local function rebuildContent(category)
                     elseif funcName == "Emote脚本" then
                         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
                     elseif funcName == "xa" then
-                        -- 放脚本E代码loadstring(game:HttpGet("https://raw.gitcode.com/Xingtaiduan/Scripts/raw/main/Loader.lua"))()
+                       loadstring(game:HttpGet("https://raw.gitcode.com/Xingtaiduan/Scripts/raw/main/Loader.lua"))()
                     elseif funcName == "脚本F" then
                         -- 放脚本F代码
                     elseif funcName == "脚本G" then
