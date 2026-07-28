@@ -552,4 +552,44 @@ do
     topDrag.InputEnded:Connect(endDrag)
     
     UserInputService.InputChanged:Connect(moveDrag)
+end-- ===== 欢迎飘字 =====
+local function showWelcome()
+    -- 创建临时GUI
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "WelcomeNotify"
+    gui.Parent = game.CoreGui
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 0, 0, 0)
+    label.Position = UDim2.new(0.5, 0, 0.5, 0)
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.Text = "🎉 欢迎使用 Delta Hub"
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 28
+    label.TextStrokeTransparency = 0.3
+    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.Parent = gui
+
+    -- 弹入动画
+    label.Size = UDim2.new(0, 0, 0, 0)
+    local TweenService = game:GetService("TweenService")
+    local sizeTween = TweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 400, 0, 50)
+    })
+    sizeTween:Play()
+
+    -- 停留1.5秒后淡出消失
+    task.wait(1.5)
+    local fadeTween = TweenService:Create(label, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        TextTransparency = 1
+    })
+    fadeTween:Play()
+    task.wait(0.6)
+    gui:Destroy()
 end
+
+-- 延迟0.5秒执行，确保菜单先加载完
+task.wait(0.5)
+showWelcome()
