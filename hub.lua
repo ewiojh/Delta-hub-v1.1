@@ -1,25 +1,16 @@
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-local TweenService = game:GetService("TweenService")
-local Camera = workspace.CurrentCamera
-local player = Players.LocalPlayer
-local playerGui = game.CoreGui
-
 if _G.DeltaHub_Loaded then
     warn("检测到重复脚本，自动清理旧实例...")
     if _G.DeltaHub_Gui then
         pcall(function() _G.DeltaHub_Gui:Destroy() end)
     end
 end
-_G.DeltaHub_Loaded = true
-
-game:GetService("Players").LocalPlayer.OnTeleport:Connect(function()
-    if _G.DeltaHub_Gui then
-        pcall(function() _G.DeltaHub_Gui:Destroy() end)
-        _G.DeltaHub_Gui = nil
-    end
-end)
+_G.DeltaHub_Loaded = truelocal Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Camera = workspace.CurrentCamera
+local player = Players.LocalPlayer
+local playerGui = game.CoreGui
 
 local CONFIG = {
     WindowSize = Vector2.new(460, 370),
@@ -43,7 +34,6 @@ local isOpen = false
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "DeltaHub"
 screenGui.Parent = playerGui
-_G.DeltaHub_Gui = screenGui
 
 local function roundify(instance, r)
     local c = Instance.new("UICorner")
@@ -155,8 +145,6 @@ closeBtn.Font = Enum.Font.Gotham
 closeBtn.Parent = topbar
 closeBtn.MouseButton1Click:Connect(function()
     screenGui:Destroy()
-    _G.DeltaHub_Loaded = nil
-    _G.DeltaHub_Gui = nil
 end)
 
 miniExpandBtn.MouseButton1Click:Connect(function()
@@ -314,9 +302,22 @@ RunService.RenderStepped:Connect(function()
                     data.line.Color = color
                     data.line.From = Vector2.new(screenPos.X, screenPos.Y)
                     data.line.To = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
-           local function getFunctions(category)
+                    data.line.Transparency = 0.7
+                else
+                    data.line.Visible = false
+                end
+            else
+                data.box.Visible = false
+                data.line.Visible = false
+            end
+        else
+            data.box.Visible = false
+            data.line.Visible = false
+        end
+    end
+end)local function getFunctions(category)
     local funcs = {
-        ["脚本1"] = {"夜脚本", "ROB V2", "双逆"},
+        ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本"},
         ["脚本2"] = {"脚本E", "脚本F", "脚本G"},
         ["脚本3"] = {"脚本H", "脚本I", "脚本J"},
         ["脚本4"] = {"脚本K", "脚本L", "脚本M"},
@@ -400,18 +401,8 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/ylt410/roblox-Script/refs/heads/main/yejiaoben"))()
                     elseif funcName == "ROB V2" then
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
-                    elseif funcName == "双逆" then
-                        local Speaker = cloneref(game:GetService("Players")).LocalPlayer
-                        local OldNameCall = hookmetamethod(game, "__namecall", function(self, ...)
-                            if self ~= Speaker or getnamecallmethod() ~= "IsInGroup" then
-                                return OldNameCall(self, ...)
-                            end
-                            return true
-                        end)
-                        hookfunction(Speaker.IsInGroup, function(self, ...)
-                            return true
-                        end)
-                        loadstring(game:HttpGet("https://raw.gitcode.com/Xingtaiduan/Scripts/raw/main/Loader.lua"))()
+                    elseif funcName == "Emote脚本" then
+                        loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
                     elseif funcName == "脚本E" then
                         -- 放脚本E代码
                     elseif funcName == "脚本F" then
@@ -553,13 +544,59 @@ do
     end
     
     miniDrag.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch thenif input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-    local delta = input.Position - dragStart
-    window.Position = UDim2.new(
-        startPos.X.Scale,
-        startPos.X.Offset + delta.X,
-        startPos.Y.Scale,
-        startPos.Y.Offset + delta.Y
-    )
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            startDrag(input, "mini")
+        end
+    end)
+    miniDrag.InputEnded:Connect(endDrag)
+    
+    topDrag.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            startDrag(input, "top")
+        end
+    end)
+    topDrag.InputEnded:Connect(endDrag)
+    
+    UserInputService.InputChanged:Connect(moveDrag)
+end-- ===== 欢迎飘字 =====
+local function showWelcome()
+    -- 创建临时GUI
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "WelcomeNotify"
+    gui.Parent = game.CoreGui
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(0, 0, 0, 0)
+    label.Position = UDim2.new(0.5, 0, 0.5, 0)
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.Text = "🎉 欢迎使用 Delta Hub"
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextSize = 28
+    label.TextStrokeTransparency = 0.3
+    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.Parent = gui
+
+    -- 弹入动画
+    label.Size = UDim2.new(0, 0, 0, 0)
+    local TweenService = game:GetService("TweenService")
+    local sizeTween = TweenService:Create(label, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Size = UDim2.new(0, 400, 0, 50)
+    })
+    sizeTween:Play()
+
+    -- 停留1.5秒后淡出消失
+    task.wait(1.5)
+    local fadeTween = TweenService:Create(label, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        TextTransparency = 1
+    })
+    fadeTween:Play()
+    task.wait(0.6)
+    gui:Destroy()
 end
-      
+
+-- 延迟0.5秒执行，确保菜单先加载完
+task.wait(0.5)
+showWelcome()task.wait(1)
+showLeftNotification("🎮 Delta Hub", "脚本已加载，欢迎使用！", 5)
