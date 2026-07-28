@@ -592,4 +592,83 @@ end
 
 -- 延迟0.5秒执行，确保菜单先加载完
 task.wait(0.5)
-showWelcome()
+showWelcome()-- ===== 玩家信息卡片（永久显示） =====
+local function showPlayerCard()
+    local player = game.Players.LocalPlayer
+    local userId = player.UserId
+    local userName = player.Name
+    local avatarThumbnail = "https://www.roblox.com/headshot-thumbnail/image?userId=" .. userId .. "&width=150&height=150&format=png"
+
+    local gui = Instance.new("ScreenGui")
+    gui.Name = "PlayerCard"
+    gui.Parent = game.CoreGui
+
+    local card = Instance.new("Frame")
+    card.Size = UDim2.new(0, 280, 0, 90)
+    card.Position = UDim2.new(0.02, 0, 0.06, 0)
+    card.BackgroundColor3 = Color3.fromRGB(20, 20, 25)
+    card.BackgroundTransparency = 0.05
+    card.BorderSizePixel = 0
+    card.Parent = gui
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 16)
+    corner.Parent = card
+
+    local stroke = Instance.new("UIStroke")
+    stroke.Thickness = 1.5
+    stroke.Transparency = 0.3
+    stroke.Color = Color3.fromRGB(255, 255, 255)
+    stroke.Parent = card
+
+    local avatarContainer = Instance.new("Frame")
+    avatarContainer.Size = UDim2.new(0, 50, 0, 50)
+    avatarContainer.Position = UDim2.new(0.06, 0, 0.5, -25)
+    avatarContainer.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+    avatarContainer.BackgroundTransparency = 0.3
+    avatarContainer.BorderSizePixel = 0
+    avatarContainer.Parent = card
+
+    local avatarCorner = Instance.new("UICorner")
+    avatarCorner.CornerRadius = UDim.new(1, 0)
+    avatarCorner.Parent = avatarContainer
+
+    local avatarImage = Instance.new("ImageLabel")
+    avatarImage.Size = UDim2.new(1, 0, 1, 0)
+    avatarImage.Image = avatarThumbnail
+    avatarImage.BackgroundTransparency = 1
+    avatarImage.Parent = avatarContainer
+
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Size = UDim2.new(0.65, 0, 0.4, 0)
+    nameLabel.Position = UDim2.new(0.28, 0, 0.3, 0)
+    nameLabel.Text = userName
+    nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    nameLabel.TextSize = 18
+    nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Font = Enum.Font.GothamBold
+    nameLabel.Parent = card
+
+    local closeBtn = Instance.new("TextButton")
+    closeBtn.Size = UDim2.new(0, 24, 0, 24)
+    closeBtn.Position = UDim2.new(1, -32, 0, 6)
+    closeBtn.Text = "✕"
+    closeBtn.TextColor3 = Color3.fromRGB(160, 160, 175)
+    closeBtn.TextSize = 14
+    closeBtn.BackgroundTransparency = 1
+    closeBtn.Font = Enum.Font.Gotham
+    closeBtn.Parent = card
+    closeBtn.MouseButton1Click:Connect(function()
+        gui:Destroy()
+    end)
+
+    card.BackgroundTransparency = 1
+    local TweenService = game:GetService("TweenService")
+    local fadeIn = TweenService:Create(card, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+        BackgroundTransparency = 0.05
+    })
+    fadeIn:Play()
+end
+
+showPlayerCard()
