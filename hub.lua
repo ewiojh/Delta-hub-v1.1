@@ -318,7 +318,7 @@ RunService.RenderStepped:Connect(function()
 end)local function getFunctions(category)
     local funcs = {
         ["脚本1"] = {"夜脚本", "ROB V2", "Emote脚本"},
-        ["脚本2"] = {"ax", "脚本F", "脚本G"},
+        ["脚本2"] = {"tx", "脚本F", "脚本G"},
         ["脚本3"] = {"脚本H", "脚本I", "脚本J"},
         ["脚本4"] = {"脚本K", "脚本L", "脚本M"},
         ["脚本5"] = {"脚本N", "脚本O", "脚本P"},
@@ -403,8 +403,9 @@ local function rebuildContent(category)
                         loadstring(game:HttpGet("https://raw.githubusercontent.com/Zyb150933/ROB/refs/heads/main/ROB.V2"))()
                     elseif funcName == "Emote脚本" then
                         loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-7yd7-I-Emote-Script-48024"))()
-                    elseif funcName == "xa" then
-                       loadstring(game:HttpGet("https://raw.gitcode.com/Xingtaiduan/Scripts/raw/main/Loader.lua"))()
+                    elseif funcName == "tx" then
+                      
+TX = "TX Script"loadstring(Game:HttpGet("https://raw.githubusercontent.com/JsYb666/TX-Free/refs/heads/main/TX-V3.0"))()
                     elseif funcName == "脚本F" then
                         -- 放脚本F代码
                     elseif funcName == "脚本G" then
