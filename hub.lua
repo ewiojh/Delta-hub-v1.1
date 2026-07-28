@@ -1,10 +1,4 @@
-if _G.DeltaHub_Loaded then
-    warn("检测到重复脚本，自动清理旧实例...")
-    if _G.DeltaHub_Gui then
-        pcall(function() _G.DeltaHub_Gui:Destroy() end)
-    end
-end
-_G.DeltaHub_Loaded = true          local Players = game:GetService("Players")
+local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
